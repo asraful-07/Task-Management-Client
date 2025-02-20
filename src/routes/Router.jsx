@@ -4,6 +4,7 @@ import MainLayout from "../layouts/MainLayout";
 import Home from "../Pages/Home/Home";
 import Login from "../Pages/Login/Login";
 import Register from "../Pages/Register.jsx/Register";
+import AddManagement from "../Pages/Management/AddManagement";
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/addManagement",
+        element: <AddManagement />,
       },
       {
         path: "/login",

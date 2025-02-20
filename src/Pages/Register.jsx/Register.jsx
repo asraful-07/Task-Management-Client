@@ -89,7 +89,7 @@ const Register = () => {
   };
 
   return (
-    <section className="my-container bg-black text-white">
+    <section className="my-container bg-black text-white my-20">
       <div className="mx-auto w-full rounded border border-cyan-500 lg:w-1/2">
         <div className="p-6 md:p-8 lg:p-10">
           <h3 className="text-center text-2xl font-semibold text-cyan-500 md:pb-10 lg:text-4xl">
