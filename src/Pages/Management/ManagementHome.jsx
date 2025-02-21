@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Tasks from "./Tasks";
 
 const ManagementHome = () => {
   return (
@@ -14,6 +15,9 @@ const ManagementHome = () => {
             Add Management
           </Link>
         </div>
+      </div>
+      <div>
+        <Tasks />
       </div>
     </div>
   );
