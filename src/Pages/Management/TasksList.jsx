@@ -1,11 +1,11 @@
 import axios from "axios";
 import React from "react";
-import toast from "react-hot-toast";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const TasksList = ({ list, refetch }) => {
-  const { _id, title, description, category, timestamp, image } = list;
+  const { _id, title, description, category, timestamp } = list;
 
   // Handle Delete Action
   const handleDelete = async () => {
@@ -31,11 +31,6 @@ const TasksList = ({ list, refetch }) => {
     }
   };
 
-  // Handle Edit Action (Example: Open Edit Modal)
-  const handleEdit = () => {
-    alert("Editing is not yet implemented!");
-  };
-
   return (
     <tr className="hover:bg-cyan-700 transition-colors">
       <td className="px-5 py-5 border-b border-gray-200 bg-black text-white">
@@ -52,12 +47,11 @@ const TasksList = ({ list, refetch }) => {
       </td>
       <td className="px-5 py-5 border-b border-gray-200 bg-black text-white">
         <div className="flex items-center space-x-4">
-          <button
-            onClick={handleEdit}
-            className="text-cyan-400 hover:text-cyan-600"
-          >
-            <FaEdit size={18} />
-          </button>
+          <Link to={`/update/${_id}`}>
+            <button className="text-cyan-400 hover:text-cyan-600">
+              <FaEdit size={18} />
+            </button>
+          </Link>
           <button
             onClick={handleDelete}
             className="text-red-500 hover:text-red-700"
