@@ -1,65 +1,82 @@
-import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import React, { useState } from "react";
 import useAuth from "../../hooks/useAuth";
-import TasksList from "./TasksList";
+import TasksColumn from "./TasksColumn";
+import { DndContext } from "@dnd-kit/core";
+
+const column = [
+  { category: "To-Do" },
+  { category: "In Progress" },
+  { category: "Done" },
+];
 
 const Tasks = () => {
   const { user } = useAuth();
+  const [tasks, setTasks] = useState([]);
 
   // Fetch tasks using React Query
-  const {
-    data: tasks = [],
-    isLoading,
-    refetch,
-    error,
-  } = useQuery({
+  const { isLoading, refetch, error } = useQuery({
     queryKey: ["tasks", user?.email],
     queryFn: async () => {
       if (!user?.email) return [];
       const { data } = await axios.get(
-        `https://job-task-server-kohl.vercel.app/task/${user.email}`
+        `https://job-task-server-kohl.vercel.app/tasks/user/${user.email}`
       );
-      return Array.isArray(data) ? data : data.tasks || [];
+      setTasks(data);
+      return data;
     },
   });
 
-  if (isLoading) return <h1 className="text-cyan-400">Loading...</h1>;
-  if (error) return <h1 className="text-red-500">Error fetching tasks!</h1>;
+  const handleDragEnd = async (event) => {
+    const { active, over } = event;
+
+    if (!over) return;
+
+    const taskId = active.id;
+    const updateCategory = over.id;
+
+    if (taskId && updateCategory) {
+      try {
+        await axios.patch(
+          `https://job-task-server-kohl.vercel.app/tasks/update-category-order/${taskId}`,
+          { category: updateCategory }
+        );
+        refetch(); // Refetch tasks to update the UI
+      } catch (error) {
+        console.error("Error updating task category:", error);
+      }
+    }
+
+    // setTasks(() =>
+    //   tasks.map((task) =>
+    //     task.id === taskId
+    //       ? {
+    //           ...task,
+    //           category: updateCategory,
+    //         }
+    //       : task
+    //   )
+    // );
+  };
 
   return (
-    <div className="container mx-auto px-4 sm:px-8 bg-black text-white">
-      <div className="py-8">
-        <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-          <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
-            <table className="min-w-full leading-normal">
-              <thead className="bg-cyan-500 text-black">
-                <tr>
-                  <th className="px-5 py-3 border-b border-gray-200 text-left text-sm uppercase font-normal">
-                    Title
-                  </th>
-                  <th className="px-5 py-3 border-b border-gray-200 text-left text-sm uppercase font-normal">
-                    Description
-                  </th>
-                  <th className="px-5 py-3 border-b border-gray-200 text-left text-sm uppercase font-normal">
-                    Category
-                  </th>
-                  <th className="px-5 py-3 border-b border-gray-200 text-left text-sm uppercase font-normal">
-                    Timestamp
-                  </th>
-                  <th className="px-5 py-3 border-b border-gray-200 text-left text-sm uppercase font-normal">
-                    Action
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {tasks.map((task) => (
-                  <TasksList key={task._id} refetch={refetch} list={task} />
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+    <div className="p-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <DndContext onDragEnd={handleDragEnd}>
+          {column?.map((column) => {
+            return (
+              <TasksColumn
+                key={column.category}
+                column={column}
+                tasks={tasks?.filter(
+                  (task) => task.category === column.category
+                )}
+                refetch={refetch}
+              />
+            );
+          })}
+        </DndContext>
       </div>
     </div>
   );

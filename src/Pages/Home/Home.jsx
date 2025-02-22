@@ -5,7 +5,7 @@ import ManagementHome from "../Management/ManagementHome";
 const Home = () => {
   return (
     <div>
-      <Banner />
+      {/* <Banner /> */}
       <ManagementHome />
     </div>
   );
