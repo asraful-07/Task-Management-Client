@@ -64,7 +64,7 @@ const Register = () => {
 
       // Save user info to the database
       const response = await fetch(
-        "https://project-server-site.vercel.app/users",
+        "https://job-task-server-kohl.vercel.app/users",
         {
           method: "POST",
           headers: {

@@ -18,7 +18,7 @@ const Tasks = () => {
     queryFn: async () => {
       if (!user?.email) return [];
       const { data } = await axios.get(
-        `http://localhost:5000/task/${user.email}`
+        `https://job-task-server-kohl.vercel.app/task/${user.email}`
       );
       console.log("API response:", data);
       return Array.isArray(data) ? data : data.tasks || [];

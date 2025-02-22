@@ -29,7 +29,7 @@ const TasksListUpdate = () => {
     };
 
     axios
-      .put(`http://localhost:5000/task-edit/${_id}`, taskData)
+      .put(`https://job-task-server-kohl.vercel.app/task-edit/${_id}`, taskData)
       .then((response) => {
         console.log("Task updated successfully:", response.data);
         toast.success("Task updated successfully!");

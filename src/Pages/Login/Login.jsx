@@ -27,7 +27,7 @@ const Login = () => {
       const loginInfo = { lastSignInTime };
 
       // Send PATCH request to update user last login time
-      await fetch(`https://project-server-site.vercel.app/users/${email}`, {
+      await fetch(`https://job-task-server-kohl.vercel.app/users/${email}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

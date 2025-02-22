@@ -20,7 +20,10 @@ const AddManagement = () => {
   // Mutation to add a task
   const mutation = useMutation({
     mutationFn: async (newTask) => {
-      return await axios.post("http://localhost:5000/tasks", newTask);
+      return await axios.post(
+        "https://job-task-server-kohl.vercel.app/tasks",
+        newTask
+      );
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["tasks"]);

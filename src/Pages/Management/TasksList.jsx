@@ -21,7 +21,9 @@ const TasksList = ({ list, refetch }) => {
 
     if (result.isConfirmed) {
       try {
-        await axios.delete(`http://localhost:5000/tasks/${_id}`);
+        await axios.delete(
+          `https://job-task-server-kohl.vercel.app/tasks/${_id}`
+        );
         refetch();
         Swal.fire("Deleted!", "Your task has been deleted.", "success");
       } catch (error) {
