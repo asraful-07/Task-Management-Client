@@ -20,7 +20,6 @@ const Tasks = () => {
       const { data } = await axios.get(
         `https://job-task-server-kohl.vercel.app/task/${user.email}`
       );
-      console.log("API response:", data);
       return Array.isArray(data) ? data : data.tasks || [];
     },
   });
